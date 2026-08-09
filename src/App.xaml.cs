@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows;
 
-namespace Helper_Asta
+namespace HelperAsta
 {
     /// <summary>
     /// Interaction logic for App.xaml

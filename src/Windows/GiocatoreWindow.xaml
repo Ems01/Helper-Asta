@@ -1,0 +1,169 @@
+<Window x:Class="HelperAsta.Windows.GiocatoreWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Dettaglio giocatore"
+        Height="650"
+        Width="620"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner">
+
+    <Grid Margin="25">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- INTESTAZIONE -->
+        <StackPanel Grid.Row="0"
+                    Margin="0,0,0,20">
+
+            <TextBlock x:Name="TxtNome"
+                       FontSize="30"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"/>
+
+            <TextBlock x:Name="TxtSquadra"
+                       FontSize="18"
+                       Foreground="Gray"
+                       HorizontalAlignment="Center"
+                       Margin="0,5,0,0"/>
+
+            <TextBlock x:Name="TxtCategoria"
+                       FontSize="16"
+                       FontWeight="SemiBold"
+                       HorizontalAlignment="Center"
+                       Margin="0,5,0,0"/>
+
+        </StackPanel>
+
+        <!-- CONTATORE ALTERNATIVE -->
+        <Border Grid.Row="1"
+                BorderBrush="DarkGray"
+                BorderThickness="1"
+                CornerRadius="8"
+                Padding="15"
+                Margin="0,0,0,20">
+
+            <StackPanel>
+                <TextBlock Text="ALTERNATIVE DISPONIBILI"
+                           FontSize="13"
+                           FontWeight="SemiBold"
+                           HorizontalAlignment="Center"/>
+
+                <TextBlock x:Name="TxtAlternative"
+                           FontSize="26"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           Margin="0,5,0,0"/>
+            </StackPanel>
+
+        </Border>
+
+        <!-- STATISTICHE -->
+        <Grid Grid.Row="2">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0"
+                        Margin="10">
+
+                <TextBlock Text="STAGIONE PRECEDENTE"
+                           FontWeight="Bold"
+                           FontSize="15"
+                           Margin="0,0,0,15"/>
+
+                <TextBlock x:Name="TxtPartite"
+                           Margin="0,0,0,8"/>
+
+                <TextBlock x:Name="TxtMedia"
+                           Margin="0,0,0,8"/>
+
+                <TextBlock x:Name="TxtFantamedia"
+                           Margin="0,0,0,8"/>
+
+                <TextBlock x:Name="TxtGol"
+                           Margin="0,0,0,8"/>
+
+                <TextBlock x:Name="TxtAssist"
+                           Margin="0,0,0,8"/>
+
+                <TextBlock x:Name="TxtGialli"
+                           Margin="0,0,0,8"/>
+
+                <TextBlock x:Name="TxtRossi"
+                           Margin="0,0,0,8"/>
+
+            </StackPanel>
+
+            <StackPanel Grid.Column="1"
+                        Margin="10">
+
+                <TextBlock Text="INFORMAZIONI ASTA"
+                           FontWeight="Bold"
+                           FontSize="15"
+                           Margin="0,0,0,15"/>
+
+                <TextBlock x:Name="TxtTitolarita"
+                           Margin="0,0,0,8"/>
+
+                <TextBlock x:Name="TxtObiettivo"
+                           Margin="0,0,0,8"/>
+
+                <TextBlock x:Name="TxtRigori"
+                           Margin="0,0,0,8"/>
+
+                <TextBlock x:Name="TxtPunizioni"
+                           Margin="0,0,0,8"/>
+
+                <TextBlock x:Name="TxtInfortunio"
+                           TextWrapping="Wrap"
+                           Margin="0,0,0,8"/>
+
+                <TextBlock x:Name="TxtEstero"
+                           TextWrapping="Wrap"
+                           Margin="0,0,0,8"/>
+
+                <TextBlock x:Name="TxtAllenatore"
+                           Margin="0,0,0,8"/>
+
+                <TextBlock x:Name="TxtSituazioneAllenatore"
+                           Margin="0,0,0,8"/>
+
+            </StackPanel>
+
+        </Grid>
+
+        <!-- PULSANTI -->
+        <Grid Grid.Row="3"
+              Margin="0,20,0,0">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0"
+                    Content="ANNULLA"
+                    Height="45"
+                    Margin="0,0,8,0"
+                    FontWeight="Bold"
+                    Click="BtnAnnulla_Click"/>
+
+            <Button Grid.Column="1"
+                    Content="PRESO"
+                    Height="45"
+                    Margin="8,0,0,0"
+                    FontWeight="Bold"
+                    Click="BtnPreso_Click"/>
+
+        </Grid>
+
+    </Grid>
+
+</Window>

@@ -181,6 +181,7 @@
                            DockPanel.Dock="Right"/>
             </DockPanel>
 
+            <!-- TABELLA -->
             <DataGrid x:Name="DgGiocatori"
                       Grid.Row="1"
                       AutoGenerateColumns="False"

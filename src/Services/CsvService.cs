@@ -4,8 +4,12 @@ using System.IO;
 
 namespace HelperAsta.Services
 {
+    /// <summary>
+    /// Servizio per la gestione dei file CSV contenenti i dati dei giocatori.
+    /// </summary>
     public class CsvService
     {
+        /// Carica i giocatori da un file CSV e li restituisce come lista di oggetti Giocatore.
         public List<Giocatore> CaricaGiocatori(string percorsoFile)
         {
             var giocatori = new List<Giocatore>();
@@ -67,6 +71,7 @@ namespace HelperAsta.Services
             return giocatori;
         }
 
+        // Genera una copia del file CSV originale con il suffisso "_asta" nel nome del file.
         public string CreaCopiaDiLavoro(string percorsoOriginale, bool sovrascrivi = false)
         {
             if (!File.Exists(percorsoOriginale))
@@ -107,6 +112,7 @@ namespace HelperAsta.Services
             return percorsoCopia;
         }
 
+        // Funzione di supporto per convertire una stringa in intero, restituendo 0 in caso di errore.
         private int ConvertiIntero(string valore)
         {
             if (string.IsNullOrWhiteSpace(valore))
@@ -124,6 +130,7 @@ namespace HelperAsta.Services
             return 0;
         }
 
+        // Funzione di supporto per convertire una stringa in double, restituendo 0 in caso di errore.
         private double ConvertiDouble(string valore)
         {
             if (string.IsNullOrWhiteSpace(valore))
@@ -141,6 +148,7 @@ namespace HelperAsta.Services
             return 0;
         }
 
+        // Salva i giocatori disponibili in un file CSV, sovrascrivendo il file esistente se necessario.
         public void SalvaGiocatoriDisponibili(string percorsoFile, IEnumerable<Giocatore> giocatori)
         {
             string percorsoTemporaneo = percorsoFile + ".tmp";
@@ -150,6 +158,7 @@ namespace HelperAsta.Services
                 "nome;squadra;ruolo;titolarità;partite;media;fantamedia;obiettivo;gol;assist;rigori;punizioni;gialli;rossi;infortunio;estero;allenatore;situazione_allenatore"
             };
 
+            // Aggiungiamo solo i giocatori disponibili al file CSV.
             foreach (Giocatore g in giocatori.Where(g => g.Disponibile))
             {
                 string riga = string.Join(";",

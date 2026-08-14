@@ -3,12 +3,16 @@ using System.Windows;
 
 namespace HelperAsta.Windows
 {
+    /// <summary>
+    /// Interazione logica per GiocatoreWindow.xaml
+    /// </summary>
     public partial class GiocatoreWindow : Window
     {
         private readonly Giocatore _giocatore;
 
         public event Action<Giocatore>? GiocatorePresoConfermato;
 
+        // Inizializza la finestra con i dati del giocatore e il numero di alternative disponibili.
         public GiocatoreWindow(Giocatore giocatore, int numeroAlternative)
         {
             InitializeComponent();
@@ -18,6 +22,7 @@ namespace HelperAsta.Windows
             CaricaDati(numeroAlternative);
         }
 
+        // Carica i dati del giocatore nella finestra.
         private void CaricaDati(int numeroAlternative)
         {
             TxtNome.Text = _giocatore.Nome;
@@ -83,6 +88,7 @@ namespace HelperAsta.Windows
                 $"Situazione allenatore: {_giocatore.SituazioneAllenatore}";
         }
 
+        // Descrive la gerarchia di un valore numerico in base a regole specifiche.
         private string DescriviGerarchia(int valore)
         {
             return valore switch
@@ -94,11 +100,14 @@ namespace HelperAsta.Windows
             };
         }
 
+        // Gestisce l'evento di click sul pulsante "Annulla", chiudendo la finestra.
         private void BtnAnnulla_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
 
+
+        // Gestisce l'evento di click sul pulsante "Preso", invocando l'evento GiocatorePresoConfermato e chiudendo la finestra.
         private void BtnPreso_Click(object sender, RoutedEventArgs e)
         {
             GiocatorePresoConfermato?.Invoke(_giocatore);

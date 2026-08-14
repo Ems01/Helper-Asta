@@ -1,15 +1,18 @@
 ﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Shapes;
 using HelperAsta.Models;
 using HelperAsta.Services;
 using HelperAsta.Windows;   
 using Microsoft.Win32;
 using System.IO;
-using System.Windows.Input;
 
 namespace HelperAsta
 {
+    /// <summary>
+    /// Finestra principale dell'applicazione.
+    /// Gestisce il caricamento del dataset, i filtri di ricerca,
+    /// la visualizzazione dei giocatori e l'apertura delle finestre di dettaglio.
+    /// </summary>
     public partial class MainWindow : Window
     {
         private readonly CsvService _csvService = new CsvService();
@@ -18,6 +21,7 @@ namespace HelperAsta
 
         private string? _percorsoCopiaLavoro;
 
+        // Costruttore della finestra principale.
         public MainWindow()
         {
             InitializeComponent();
@@ -25,6 +29,7 @@ namespace HelperAsta
             InizializzaFiltri();
         }
 
+        // Inizializza le ComboBox dei filtri con le opzioni disponibili.
         private void InizializzaFiltri()
         {
             CmbRuolo.Items.Add("Tutti");
@@ -59,6 +64,7 @@ namespace HelperAsta
 
         }
 
+        // Event handler per il click sul pulsante "Carica CSV".
         private void BtnCaricaCsv_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
@@ -72,18 +78,16 @@ namespace HelperAsta
             if (risultato != true)
                 return;
 
+            // Carico il CSV selezionato e gestisco eventuali eccezioni.
             try
             {
                 string percorsoOriginale = openFileDialog.FileName;
 
-                string cartella =
-    System.IO.Path.GetDirectoryName(percorsoOriginale)!;
+                string cartella = System.IO.Path.GetDirectoryName(percorsoOriginale)!;
 
-                string nomeFile =
-                    System.IO.Path.GetFileNameWithoutExtension(percorsoOriginale);
+                string nomeFile = System.IO.Path.GetFileNameWithoutExtension(percorsoOriginale);
 
-                string estensione =
-                    System.IO.Path.GetExtension(percorsoOriginale);
+                string estensione = System.IO.Path.GetExtension(percorsoOriginale);
 
                 bool fileGiaDiAsta = nomeFile.EndsWith(
                     "_asta",
@@ -95,9 +99,7 @@ namespace HelperAsta
                 }
                 else
                 {
-                    string possibileCopia = System.IO.Path.Combine(
-                        cartella,
-                        $"{nomeFile}_asta{estensione}");
+                    string possibileCopia = System.IO.Path.Combine(cartella, $"{nomeFile}_asta{estensione}");
 
                     if (File.Exists(possibileCopia))
                     {
@@ -136,8 +138,7 @@ namespace HelperAsta
 
                 CaricaFiltroSquadre();
 
-                TxtFileCaricato.Text =
-                    System.IO.Path.GetFileName(percorsoOriginale);
+                TxtFileCaricato.Text = System.IO.Path.GetFileName(percorsoOriginale);
 
                 ApplicaFiltri();
 
@@ -157,11 +158,13 @@ namespace HelperAsta
             }
         }
 
+        // Event handler per il click sul pulsante "Cerca".
         private void BtnCerca_Click(object sender, RoutedEventArgs e)
         {
             ApplicaFiltri();
         }
 
+        // Event handler per il click sul pulsante "Reset".
         private void BtnReset_Click(object sender, RoutedEventArgs e)
         {
             TxtNome.Text = string.Empty;
@@ -174,6 +177,7 @@ namespace HelperAsta
             ApplicaFiltri();
         }
 
+        // Applica i filtri selezionati dall'utente e aggiorna la visualizzazione dei giocatori.
         private void ApplicaFiltri()
         {
             if (_giocatori.Count == 0)
@@ -207,8 +211,7 @@ namespace HelperAsta
                         StringComparison.OrdinalIgnoreCase));
             }
 
-            string? titolarita =
-                CmbTitolarita.SelectedItem?.ToString();
+            string? titolarita = CmbTitolarita.SelectedItem?.ToString();
 
             if (!string.IsNullOrWhiteSpace(titolarita) &&
                 titolarita != "Tutte")
@@ -230,8 +233,7 @@ namespace HelperAsta
                         StringComparison.OrdinalIgnoreCase));
             }
 
-            string? obiettivo =
-                CmbObiettivo.SelectedItem?.ToString();
+            string? obiettivo = CmbObiettivo.SelectedItem?.ToString();
 
             if (!string.IsNullOrWhiteSpace(obiettivo) &&
                 obiettivo != "Tutti")
@@ -251,13 +253,12 @@ namespace HelperAsta
 
             DgGiocatori.ItemsSource = risultati;
 
-            int disponibiliTotali =
-                _giocatori.Count(g => g.Disponibile);
+            int disponibiliTotali = _giocatori.Count(g => g.Disponibile);
 
-            TxtContatore.Text =
-                $"Risultati: {risultati.Count} | Disponibili totali: {disponibiliTotali}";
+            TxtContatore.Text = $"Risultati: {risultati.Count} | Disponibili totali: {disponibiliTotali}";
         }
 
+        // Event handler per la gestione del tasto "Invio".
         private void TxtNome_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -266,13 +267,13 @@ namespace HelperAsta
             }
         }
 
+        // Event handler per il doppio click su un giocatore nella DataGrid.
         private void DgGiocatori_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (DgGiocatori.SelectedItem is not Giocatore giocatore)
                 return;
 
-            // Quando apro il giocatore mostro le alternative
-            // con stesso ruolo e stesso obiettivo.
+            // Quando apro il giocatore mostro le alternative con stesso ruolo e stesso obiettivo.
             MostraAlternative(giocatore);
 
             int numeroAlternative = _giocatori.Count(g =>
@@ -298,8 +299,7 @@ namespace HelperAsta
                     SegnaComePreso(giocatorePreso);
                 };
 
-            // Quando la finestra viene chiusa,
-            // mantengo soltanto il filtro del ruolo.
+            // Quando la finestra viene chiusa mantengo soltanto il filtro del ruolo.
             finestra.Closed +=
                 (s, args) =>
                 {
@@ -308,6 +308,8 @@ namespace HelperAsta
 
             finestra.Show();
         }
+
+        // Mostra le alternative con lo stesso ruolo e lo stesso obiettivo del giocatore selezionato.
         private void MostraAlternative(Giocatore giocatore)
         {
             TxtNome.Text = string.Empty;
@@ -323,6 +325,7 @@ namespace HelperAsta
             ApplicaFiltri();
         }
 
+        // Segna il giocatore come preso, aggiornando la disponibilità e salvando le modifiche nel file CSV.
         private void SegnaComePreso(Giocatore giocatore)
         {
             giocatore.Disponibile = false;
@@ -340,8 +343,7 @@ namespace HelperAsta
             }
             catch (Exception ex)
             {
-                // Se il salvataggio fallisce, annulliamo anche
-                // la modifica in memoria.
+                // Se il salvataggio fallisce, annulliamo anche la modifica in memoria.
                 giocatore.Disponibile = true;
 
                 MessageBox.Show(
@@ -356,6 +358,7 @@ namespace HelperAsta
             }
         }
 
+        // Carica le squadre uniche dai giocatori disponibili e le aggiunge al filtro della ComboBox.
         private void CaricaFiltroSquadre()
         {
             CmbSquadra.Items.Clear();
@@ -376,6 +379,7 @@ namespace HelperAsta
             CmbSquadra.SelectedIndex = 0;
         }
 
+        // Mostra solo i giocatori dello stesso ruolo del giocatore selezionato, resettando gli altri filtri.
         private void MostraGiocatoriDelRuolo(Giocatore giocatore)
         {
             TxtNome.Text = string.Empty;

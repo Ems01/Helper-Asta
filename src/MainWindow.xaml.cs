@@ -244,6 +244,7 @@ namespace HelperAsta
 
             List<Giocatore> risultati = query
                 .OrderBy(g => g.Ruolo)
+                .ThenByDescending(g => g.Obiettivo)
                 .ThenByDescending(g => g.Fantamedia)
                 .ThenBy(g => g.Nome)
                 .ToList();
@@ -270,6 +271,8 @@ namespace HelperAsta
             if (DgGiocatori.SelectedItem is not Giocatore giocatore)
                 return;
 
+            // Quando apro il giocatore mostro le alternative
+            // con stesso ruolo e stesso obiettivo.
             MostraAlternative(giocatore);
 
             int numeroAlternative = _giocatori.Count(g =>
@@ -288,15 +291,23 @@ namespace HelperAsta
 
             finestra.Owner = this;
 
+            // Se il giocatore viene preso, lo rimuovo.
             finestra.GiocatorePresoConfermato +=
                 giocatorePreso =>
                 {
                     SegnaComePreso(giocatorePreso);
                 };
 
+            // Quando la finestra viene chiusa,
+            // mantengo soltanto il filtro del ruolo.
+            finestra.Closed +=
+                (s, args) =>
+                {
+                    MostraGiocatoriDelRuolo(giocatore);
+                };
+
             finestra.Show();
         }
-
         private void MostraAlternative(Giocatore giocatore)
         {
             TxtNome.Text = string.Empty;
@@ -363,6 +374,18 @@ namespace HelperAsta
             }
 
             CmbSquadra.SelectedIndex = 0;
+        }
+
+        private void MostraGiocatoriDelRuolo(Giocatore giocatore)
+        {
+            TxtNome.Text = string.Empty;
+
+            CmbRuolo.SelectedItem = giocatore.Ruolo;
+            CmbSquadra.SelectedIndex = 0;
+            CmbTitolarita.SelectedIndex = 0;
+            CmbObiettivo.SelectedIndex = 0;
+
+            ApplicaFiltri();
         }
     }
 }
